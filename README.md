@@ -30,3 +30,7 @@ __________________________________________________________
 <img width="503" height="324" alt="likely_unlikely_imenno" src="https://github.com/user-attachments/assets/ec3967a0-1337-4c63-aaca-0d1e4bc3e546" />
 
 ## Также в папке dumpy/html представлены диаграммы распределения слов в хеш-таблице в зависимости от типа распределения
+
+## Интересное замечание по поводу rol/ror:
+<img width="1280" height="646" alt="IMAGE 2026-04-29 22:51:01" src="https://github.com/user-attachments/assets/249e2926-f030-4fba-957d-424cd987b9d2" />
+
