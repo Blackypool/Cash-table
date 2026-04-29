@@ -236,11 +236,15 @@ typ_of_hash _GNU_hash_func(val_t wo_rd)          // _GNU_hash_func
 }
 
 
+unsigned char ro_l(unsigned char wo_rd, int shr);
+unsigned char ro_r(unsigned char wo_rd, int shr);
+
+
 typ_of_hash RO_tate_Left_hash(val_t wo_rd)
 {
     typ_of_hash h_h = (typ_of_hash)wo_rd[0];
 
-    h_h = (h_h << 4) | (h_h >> (8 - 4));
+    h_h = ro_l(h_h, 4);
 
     if(strlen(wo_rd) < 2)
         return h_h;
@@ -250,12 +254,17 @@ typ_of_hash RO_tate_Left_hash(val_t wo_rd)
     return h_h;
 }
 
+unsigned char ro_l(unsigned char wo_rd, int shr)
+{
+    return (wo_rd << shr) | (wo_rd >> (8 - shr));
+}
+
 
 typ_of_hash RO_tate_Right_hash(val_t wo_rd)
 {
     typ_of_hash h_h = (typ_of_hash)wo_rd[0];
 
-    h_h = (h_h >> 4) | (h_h << (8 - 4));
+    h_h = ro_r(h_h, 4);
 
     if(strlen(wo_rd) < 2)
         return h_h;
@@ -263,4 +272,9 @@ typ_of_hash RO_tate_Right_hash(val_t wo_rd)
     h_h = h_h ^ (typ_of_hash)wo_rd[1];
 
     return h_h;
+}
+
+unsigned char ro_r(unsigned char wo_rd, int shr)
+{
+    return (wo_rd >> shr) | (wo_rd << (8 - shr));
 }
