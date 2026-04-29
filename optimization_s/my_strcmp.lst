@@ -1,0 +1,70 @@
+     1                                  section .text
+     2                                  
+     3                                  global M_strcmp_
+     4                                  
+     5                                  ;===============M_strcmp_==============my_style====
+     6                                  
+     7                                  ;   Entry:      rdi = ptr || rsi = ptr
+     8                                  ;   Exit:       1 = strcmp good         0 = strcmp fail = AX
+     9                                  ;   Expected:   Entry
+    10                                  ;   Destr:      xmm0, xmm1, eax
+    11                                  
+    12                                  ;=====================================================
+    13                                  
+    14                                  M_strcmp_:
+    15                                  ;{
+    16 00000000 31C0                        xor eax, eax
+    17                                  
+    18                                      start_chech:
+    19                                      
+    20 00000002 F30F6F07                    movdqu xmm0, [rdi]
+    21 00000006 F30F6F0E                    movdqu xmm1, [rsi]
+    22                                  
+    23                                  
+    24                                      ; unsigned char = 00
+    25                                      ; strcmp = 10
+    26                                      ; negative finder = 01 check differents not equaly
+    27                                      ; give first differens letter = 0
+    28 0000000A 660F3A63C118                pcmpistri xmm0, xmm1, 0x18        ; eCX = first dif or /0 = 0b00011000  // 16символов || цикл 
+    29                                      ; ZF = 1 <=> xmm0 E /0
+    30                                      ; CF = 1 <=> xmm1 E /0
+    31                                      ; SF = 1 <=> str not equal
+    32                                  
+    33 00000010 780E                        js str_not_equal
+    34 00000012 740A                        jz equal                            ; ZF = 1 => дошли до /0
+    35                                  
+    36 00000014 4883C610                    add rsi, 16            ; пока что равны но еще не конец
+    37 00000018 4883C710                    add rdi, 16
+    38 0000001C EBE4                        jmp start_chech
+    39                                  
+    40                                      equal:
+    41 0000001E FFC0                        inc eax
+    42                                  
+    43                                      str_not_equal:
+    44                                      
+    45 00000020 C3                          ret
+    46                                  ;}
+    47                                  ;_____________________________________________________
+    48                                  
+    49                                  
+    50                                  
+    51                                  ;===============mine_strlen==============my_style====
+    52                                  
+    53                                  ;   Entry:      rdi = ptr || rsi = ptr
+    54                                  ;   Exit:       0 = strcmp good         -1 = strcmp fail = AX
+    55                                  ;   Expected:   Entry
+    56                                  ;   Destr:      xmm0, xmm1, rax
+    57                                  
+    58                                  ;=====================================================
+    59                                  
+    60                                  ;mine_strlen:
+    61                                  ;{
+    62                                  ;    pxor xmm0, xmm0
+    63                                  ;    movdqu xmm1, [rdi]
+    64                                  
+    65                                      ;pcmpistri xmm0, xmm1, 0x08      ; <=> check where /0
+    66                                  
+    67                                      ;eCX = where /0
+    68                                      ; сдвигать вправо на проверку того 16 ли символов или больше?
+    69                                  ;}
+    70                                  ;_____________________________________________________
