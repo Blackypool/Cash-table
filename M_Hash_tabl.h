@@ -1,9 +1,14 @@
 #ifndef HASH_TABLE_H
 #define HASH_TABLE_H
 
-//////////////////////////////// optimization
-// #define PREFETcH_ASM_IN
+//____________________________________________Kesh optimization_______________________________________________________________
 // #define KESH_OPT_FOR_USER
+
+// #define USE_KESH_L1
+// #define USE_KESH_L2
+
+
+//_________________________________________________optimization_______________________________________________________________
 #define PREFETCH_USE
 
 // #define SLOW_CRC32_NO_OPT
@@ -12,13 +17,17 @@
 
 // #define SLOOOW_STRCMP
 #define MY_STRCMP_OPT
-////////////////////////////////
 
 
-#define HASH_SIZE 7937            // load factor = numslov / size
+//___________________________________________________HASH_SIZE_______________________________________________________________
+#define HASH_SIZE 7937              // load factor = numslov / size
+#define CAN_CHANGE_HASH_SIZE 4001
+//____________________________________________________________________________________________________________________________
+
 
 // War&P stat: all = 571452  //  unic = 23819
 #define file_name "poems/_Leo_Tolstoy.txt"
+
 
 // Onegin stat: all = 34709  // unic = 8383
 // #define file_name "poems/onegin.txt"
@@ -45,24 +54,31 @@
 #include <fcntl.h>
 #include <stdarg.h>
 
-#include <x86intrin.h>
-#include <immintrin.h>
+// #include <x86intrin.h>
+// #include <immintrin.h>
 
+
+//___________________________________________BASH_S___________________________________________________________________________
 
 // nasm -f elf64 -l optimization_s/my_strcmp.lst optimization_s/my_strcmp.asm
 // nasm -f elf64 -o optimization_s/my_strcmp.o optimization_s/my_strcmp.asm
 
-// perf record -g ./a.out
-// perf stat -r10 ./a.out
-// perf report
+// sudo perf record -g ./a.out CRC32
+// sudo perf report
 
-// hyperfine --warmup 2 --runs 10 ./a.out
+// sudo perf stat -r10 ./a.out CRC32
+
+// hyperfine --warmup 2 --runs 10 './a.out CRC_32_hash'
+
+//____________________________________________________________________________________________________________________________
 
 
-extern "C" int M_strcmp_(const char* ptr_1, const char* ptr_2);    // 1 = совпали // 0 = не совпали
+extern "C" int M_strcmp_(const char* ptr_1, const char* ptr_2);    
 
 
-typedef const char* val_t;
+#define MAX_LEN_IN_FILE 32
+// typedef const char* val_t;
+typedef char val_t[MAX_LEN_IN_FILE];
 
 typedef size_t typ_of_hash;
 typedef typ_of_hash (*func_t)(val_t wo_rd);
@@ -77,6 +93,13 @@ struct M_Hash
     char** all_word__s;
     
     size_t all_word_num;
+
+    //////////////// for_user
+    size_t last_hash;
+
+    const char*  last_word;
+
+    size_t last_what_do_u_need;
 };
 
 
@@ -85,19 +108,8 @@ struct enum_into_func
     const char* name_of_func;
 
     func_t hash_func_use;
-};
 
-
-struct Cash_
-{
-    const char* word_1;
-    const char* word_2;
-
-    size_t indx_of_1;
-    size_t indx_of_2;
-
-    size_t hash_1;
-    size_t hash_2;
+    int table_size;
 };
 
 
@@ -116,14 +128,8 @@ enum errors_
     error_in_deep = 6,
 };
 
-#define DE_BUG
-
-#ifndef DE_BUG
-#define DE_BUG fprintf(stderr, "\n\nfunc %s:%d. just check workli", __FILE__, __LINE__)
-#endif
 
 //_____________________________________________________________________________________________
-#ifndef AsserT
 #define AsserT(what_need, type_err, retern)                                                   \
             if(what_need) [[unlikely]]                                                         \
             {                                                                                   \
@@ -162,6 +168,12 @@ enum errors_
                 return retern;                                                                                                   \
             }                                                                                                                     
 //_________________________________________________________________________________________________________________________________
+
+
+#define DE_BUG
+
+#ifndef DE_BUG
+#define DE_BUG fprintf(stderr, "\n\nfunc %s:%d. just check workli", __FILE__, __LINE__)
 #endif
 
 
@@ -170,6 +182,7 @@ enum errors_
 #include "China_spiski/List.hpp"
 #include "construct_H_t/hash_types.h"
 #include "construct_H_t/do_and_crash_t.h"
+#include "construct_H_t/dump_s.h"
 //////////////////////////////////////////
 
 

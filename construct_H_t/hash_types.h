@@ -4,9 +4,7 @@
 #include "../M_Hash_tabl.h"
 
 
-int find_er_w(struct List_t* spisok, val_t crusual, size_t hash);
-
-int type_of_func_find(char* type_of_f, struct M_Hash* all_spiski);
+int find_er_w(struct List_t* spisok, val_t crusual, size_t hash, struct M_Hash* all_spiski);
 
 int KESH_buf(struct List_t** h_ash_table, val_t crusual, struct M_Hash* all_spiski);
 

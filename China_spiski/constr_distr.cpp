@@ -18,7 +18,8 @@ struct Node_t* create_node(struct List_t *spisok, val_t value)
     struct Node_t* new_node = (struct Node_t*)calloc(1, sizeof(struct Node_t));
     AsserT(new_node == NULL, memory_aloca, NULL);
 
-    new_node->value = value;
+    memcpy(new_node->value, value, MAX_LEN_IN_FILE);
+    // new_node->value = value;
 
     (spisok->size)++;
 
@@ -116,7 +117,7 @@ void distruct_last_list(struct List_t *spisok)   //передаем указат
         fict_fict = fict;
         fict = fict->next;
 
-        free((void*)fict_fict->value);
+        // free((void*)fict_fict->value);
         free(fict_fict);
     }
 

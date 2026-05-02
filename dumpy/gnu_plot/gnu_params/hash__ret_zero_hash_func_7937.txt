@@ -1,0 +1,6 @@
+   
+set terminal pngcairo size 1920,1080                     
+set output 'dumpy/gnu_plot/gnu_plot_png/hash__ret_zero_hash_func_7937.png'                                                                                                     
+set boxwidth 0.8                                         
+set style fill solid                                                                                                
+plot 'dumpy/gnu_plot/gnu_plot_txt/hash__ret_zero_hash_func_7937.txt' using 1:2 with boxes lc rgb "purple"
